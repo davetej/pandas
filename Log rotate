@@ -1,0 +1,26 @@
+import os
+import time
+from datetime import datetime, timedelta
+
+# Specify the directory you want to clean up
+directory = '/path/to/directory'
+
+# Get the current time
+now = time.time()
+
+# Define the threshold (7 days ago)
+seven_days_ago = now - 7 * 24 * 60 * 60  # 7 days in seconds
+
+# Iterate over files in the directory
+for filename in os.listdir(directory):
+    file_path = os.path.join(directory, filename)
+
+    # Check if it's a file (and not a directory)
+    if os.path.isfile(file_path):
+        # Get the last modified time of the file
+        last_modified_time = os.path.getmtime(file_path)
+
+        # Compare the last modified time with the threshold
+        if last_modified_time < seven_days_ago:
+            print(f"Deleting file: {file_path}")
+            os.remove(file_path)  # Delete the file
