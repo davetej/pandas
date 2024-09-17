@@ -1,0 +1,56 @@
+import ollama
+
+# Load the LLaMA model (adjust the model name based on your setup)
+model = ollama.Model("llama-2-7b")
+
+# Function to process human input and generate JSON output using the model
+def process_input(human_input):
+    # Define the prompt with rules to generate the output in JSON format
+    prompt = f"""
+    You are a data extraction assistant. Extract the following information from the human text and output it in the following JSON format:
+
+    Human text: "{human_input}"
+
+    JSON format:
+    {{
+        "customer": "<customer_name>",
+        "brand": "<brand_name>",
+        "LOB": [
+            {{
+                "type": "<LOB_type>",
+                "count": "<number_of_LOB>"
+            }}
+        ]
+    }}
+
+    Ensure 'brand', 'LOB type', and 'LOB count' are extracted correctly from the input.
+    """
+
+    # Generate response from the model
+    response = model.generate(prompt)
+
+    # Return the response from the model
+    return response.text
+
+# Main loop to interact with the user
+def chatbot():
+    print("Chatbot is running. Type 'exit' to stop the conversation.")
+    
+    while True:
+        # Get input from the user
+        human_input = input("\nYou: ")
+
+        # Check if the user wants to exit
+        if human_input.lower() == 'exit':
+            print("Goodbye!")
+            break
+
+        # Process the input through the LLaMA model
+        output = process_input(human_input)
+
+        # Print the processed output
+        print(f"\nBot (JSON Output): {output}")
+
+# Run the chatbot
+if __name__ == "__main__":
+    chatbot()
